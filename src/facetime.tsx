@@ -43,8 +43,8 @@ export default function Command() {
     <List
       filtering={false}
       onSearchTextChange={setInputValue}
-      navigationTitle="Call Contact"
-      searchBarPlaceholder="Give someone a call"
+      navigationTitle="Facetime"
+      searchBarPlaceholder="Facetime someone"
     >
       <Contacts
         contacts={contacts ?? []}

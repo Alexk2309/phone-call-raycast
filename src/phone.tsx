@@ -32,7 +32,7 @@ export default function Command() {
     <List
       filtering={false}
       onSearchTextChange={setInputValue}
-      navigationTitle="Call Contact"
+      navigationTitle="Call"
       searchBarPlaceholder="Give someone a call"
     >
       {inputValue && filteredContacts?.length === 0 ? (
