@@ -3,7 +3,7 @@
   "name": "phone-call",
   "title": "Phone Call",
   "description": "Allows to call someone, through their contact details.",
-  "icon": "phone-icon.png",
+  "icon": "phone.png",
   "author": "alexkim5682",
   "categories": [
     "Communication"
@@ -11,11 +11,11 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "index",
+      "name": "phone",
       "title": "Call",
       "description": "Allows a user to look call a contact.",
       "mode": "view",
-      "icon": "phone-icon.png"
+      "icon": "phone.png"
     },
     {
       "name": "facetime",
@@ -23,6 +23,26 @@
       "description": "Facetimes a contact",
       "mode": "view",
       "icon": "facetime.png"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "remove_duplicate_contacts",
+      "title": "Remove Duplicate Contacts",
+      "description": "Removes duplicate contacts from the list.",
+      "type": "checkbox",
+      "label": "Enable",
+      "default": true,
+      "required": false
+    },
+    {
+      "name": "no_confirmation",
+      "title": "Remove Confirmation Dialog",
+      "description": "Removes the confirmation dialog when facetiming",
+      "type": "checkbox",
+      "label": "Enable",
+      "default": false,
+      "required": false
     }
   ],
   "dependencies": {

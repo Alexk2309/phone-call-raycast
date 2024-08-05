@@ -1,28 +1,15 @@
-import {
-  Action,
-  ActionPanel,
-  List,
-  Icon,
-} from "@raycast/api";
-
+import React, { useState, useEffect } from "react";
+import { List, getPreferenceValues  } from "@raycast/api";
 import { getAvatarIcon, runAppleScript } from '@raycast/utils';
-import { useState, useEffect } from "react";
 import { fetchAllContacts } from "swift:../swift/contacts";
+import Contacts from "./contacts";
+import { Contact } from "./interfaces";
 
-type Contact = {
-  id: string;
-  givenName: string;
-  familyName: string;
-  phoneNumbers: string[];
-  emailAddresses: string[];
-  photo: string;
-};
+const preferences = getPreferenceValues<Preferences>();
 
 export default function Command() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
-  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
-
 
   useEffect(() => {
     fetchAllContacts().then((fetchedContacts: Contact[]) => {
@@ -30,44 +17,31 @@ export default function Command() {
     });
   }, []);
 
-  function getName(contact: Contact) {
-    return `${contact.givenName}${contact.familyName ? ` ${contact.familyName}` : ""}`;
-  }
-
-  useEffect(() => {
-    setFilteredContacts(
-      contacts.filter((contact) =>
-        (contact.givenName || contact.familyName) &&
-        `${contact.givenName} ${contact.familyName}`
-          .toLowerCase()
-          .includes(inputValue.toLowerCase())
-      )
-    );
-
-  }, [inputValue, contacts]);
-
-  function handleAction(item : Contact) {
-    const phoneNumber = item.phoneNumbers[0];
+  function handleAction(contact: Contact) {
+    const phoneNumber = contact.phoneNumbers[0];
     if (phoneNumber) {
       callNumber(phoneNumber);
     }
   }
 
   function callNumber(number: string) {
-    runAppleScript(`
+    const removeConfirmation =
+    `-- Get the localized name of the button "Call"
+      tell application "FaceTime" to set Call_loc to localized string "Call"
+      tell window 1
+        click button Call_loc
+      end tell`;
+    const appleScript = `
       do shell script "open facetime://" & quoted form of "${number}"
       tell application "System Events" to tell process "FaceTime"
         set frontmost to true
         repeat until exists window 1
           delay 0.1
         end repeat
-        -- Get the localized name of the button "Call"
-        tell application "FaceTime" to set Call_loc to localized string "Call"
-        tell window 1
-          click button Call_loc
-        end tell
+        ${preferences.no_confirmation ? removeConfirmation : ''}
       end tell
-    `);
+    `;
+    runAppleScript(appleScript);
   }
 
   return (
@@ -77,37 +51,12 @@ export default function Command() {
       navigationTitle="Call Contact"
       searchBarPlaceholder="Give someone a call"
     >
-      {inputValue && filteredContacts.length === 0 ? (
-        <List.Item
-          key="call-button"
-          title={`${inputValue}`}
-          icon={
-           Icon.Phone
-          }
-          actions={
-            <ActionPanel>
-              <Action title="" onAction={() => callNumber(inputValue)} />
-            </ActionPanel>
-          }
-        />
-      ) : (
-        filteredContacts.map((contact) => (
-          <List.Item
-            key={contact.id}
-            title={getName(contact)}
-            icon={
-              contact.photo
-                ? `data:image/png;base64,${contact.photo}`
-                : getAvatarIcon(getName(contact))
-            }
-            actions={
-              <ActionPanel>
-                <Action title="Select" onAction={() => handleAction(contact)} />
-              </ActionPanel>
-            }
-          />
-        ))
-      )}
+      <Contacts
+        contacts={contacts}
+        inputValue={inputValue}
+        handleAction={handleAction}
+        getAvatarIcon={getAvatarIcon}
+      />
     </List>
   );
 }
