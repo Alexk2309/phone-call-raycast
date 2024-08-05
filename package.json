@@ -27,15 +27,6 @@
   ],
   "preferences": [
     {
-      "name": "remove_duplicate_contacts",
-      "title": "Remove Duplicate Contacts",
-      "description": "Removes duplicate contacts from the list.",
-      "type": "checkbox",
-      "label": "Enable",
-      "default": true,
-      "required": false
-    },
-    {
       "name": "no_confirmation",
       "title": "Remove Confirmation Dialog",
       "description": "Removes the confirmation dialog when facetiming",

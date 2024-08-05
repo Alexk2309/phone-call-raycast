@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { List, getPreferenceValues  } from "@raycast/api";
+import React, { useState } from "react";
+import { List, getPreferenceValues } from "@raycast/api";
 import { getAvatarIcon, runAppleScript } from '@raycast/utils';
-import { fetchAllContacts } from "swift:../swift/contacts";
 import Contacts from "./contacts";
 import { Contact } from "./interfaces";
+import { useContactLoadingToast, useContacts } from "./helper";
+
 
 const preferences = getPreferenceValues<Preferences>();
 
 export default function Command() {
-  const [contacts, setContacts] = useState<Contact[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
+  const { contacts, isLoading } = useContacts();
+  useContactLoadingToast(isLoading);
 
-  useEffect(() => {
-    fetchAllContacts().then((fetchedContacts: Contact[]) => {
-      setContacts(fetchedContacts);
-    });
-  }, []);
 
   function handleAction(contact: Contact) {
     const phoneNumber = contact.phoneNumbers[0];
@@ -52,7 +49,7 @@ export default function Command() {
       searchBarPlaceholder="Give someone a call"
     >
       <Contacts
-        contacts={contacts}
+        contacts={contacts ?? []}
         inputValue={inputValue}
         handleAction={handleAction}
         getAvatarIcon={getAvatarIcon}

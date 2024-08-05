@@ -32,31 +32,40 @@ enum MessagesError: Error {
     CNContactFamilyNameKey,
     CNContactPhoneNumbersKey,
     CNContactEmailAddressesKey,
-    CNContactIdentifierKey,
-    CNContactThumbnailImageDataKey
-  ] as [CNKeyDescriptor]
+    CNContactIdentifierKey
+  ] as [CNKeyDescriptor] // Removed CNContactThumbnailImageDataKey for faster fetching
 
   let request = CNContactFetchRequest(keysToFetch: keys)
   var contactsDict: [String: ContactItem] = [:]
+  var uniqueNames: Set<String> = Set()
+  let serialQueue = DispatchQueue(label: "contactsSerialQueue")
+  let group = DispatchGroup()
 
   do {
     try store.enumerateContacts(with: request) { contact, _ in
-      let phoneNumbers = contact.phoneNumbers.map { $0.value.stringValue }
-      let emailAddresses = contact.emailAddresses.map { $0.value as String }
+      group.enter()
+      DispatchQueue.global().async {
+        let phoneNumbers = contact.phoneNumbers.map { $0.value.stringValue }
+        let emailAddresses = contact.emailAddresses.map { $0.value as String }
 
-      let contactKey = contact.identifier
+        let contactKey = "\(contact.givenName) \(contact.familyName)"
 
-      if contactsDict[contactKey] == nil {
-        contactsDict[contactKey] = ContactItem(
-          id: contact.identifier,
-          givenName: contact.givenName,
-          familyName: contact.familyName,
-          phoneNumbers: phoneNumbers,
-          emailAddresses: emailAddresses,
-          photo: contact.thumbnailImageData
-        )
+        serialQueue.sync {
+          if uniqueNames.insert(contactKey).inserted {
+            contactsDict[contactKey] = ContactItem(
+              id: contact.identifier,
+              givenName: contact.givenName,
+              familyName: contact.familyName,
+              phoneNumbers: phoneNumbers,
+              emailAddresses: emailAddresses,
+              photo: nil
+            )
+          }
+        }
+        group.leave()
       }
     }
+    group.wait() // Wait for all async tasks to complete
   } catch {
     throw MessagesError.noContacts
   }
