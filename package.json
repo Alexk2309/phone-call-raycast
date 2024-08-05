@@ -2,7 +2,7 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "phone",
   "title": "Phone Call",
-  "description": "An extension to initiate phone and facetime calls.",
+  "description": "Make phone and facetime calls with raycast.",
   "icon": "phone.png",
   "author": "alexkim5682",
   "categories": [
