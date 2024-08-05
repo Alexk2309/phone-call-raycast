@@ -3,12 +3,11 @@ import { Action, ActionPanel, List, Icon  } from "@raycast/api";
 import { getAvatarIcon, runAppleScript } from '@raycast/utils';
 import Contacts from "./contacts";
 import { Contact } from "./interfaces"
-import { useContactLoadingToast, useContacts } from "./helper";
+import { useContacts } from "./helper";
 
 export default function Command() {
-  const { contacts, isLoading } = useContacts();
+  const { contacts } = useContacts();
   const [inputValue, setInputValue] = useState<string>("");
-  useContactLoadingToast(isLoading);
 
   function handleAction(contact: Contact) {
     const phoneNumber = contact.phoneNumbers[0];

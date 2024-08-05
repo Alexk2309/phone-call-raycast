@@ -3,16 +3,14 @@ import { List, getPreferenceValues } from "@raycast/api";
 import { getAvatarIcon, runAppleScript } from '@raycast/utils';
 import Contacts from "./contacts";
 import { Contact } from "./interfaces";
-import { useContactLoadingToast, useContacts } from "./helper";
+import { useContacts } from "./helper";
 
 
 const preferences = getPreferenceValues<Preferences>();
 
 export default function Command() {
   const [inputValue, setInputValue] = useState<string>("");
-  const { contacts, isLoading } = useContacts();
-  useContactLoadingToast(isLoading);
-
+  const { contacts } = useContacts();
 
   function handleAction(contact: Contact) {
     const phoneNumber = contact.phoneNumbers[0];

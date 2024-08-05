@@ -1,8 +1,6 @@
 import { useCachedPromise } from '@raycast/utils';
 import { fetchAllContacts } from "swift:../swift/contacts";
 import { Contact } from "./interfaces";
-import { useEffect } from "react";
-import { showToast, Toast } from "@raycast/api"; // Ensure this import is correct
 
 export function useContacts() {
   const { data: contacts, isLoading } = useCachedPromise(
@@ -26,14 +24,4 @@ export function useContacts() {
   );
 
   return { contacts, isLoading };
-}
-
-export function useContactLoadingToast(isLoading: boolean) {
-  useEffect(() => {
-    if (isLoading) {
-      showToast(Toast.Style.Animated, "Loading contacts...");
-    } else {
-      showToast(Toast.Style.Success, "Contacts loaded");
-    }
-  }, [isLoading]);
 }
