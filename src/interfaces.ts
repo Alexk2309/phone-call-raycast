@@ -5,4 +5,4 @@ export interface Contact {
   phoneNumbers: string[];
   emailAddresses: string[];
   photo: string;
-};
+}

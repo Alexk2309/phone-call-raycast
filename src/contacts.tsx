@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { Action, ActionPanel, List } from "@raycast/api";
 
 type Contact = {
@@ -26,12 +26,11 @@ export default function Contacts({ contacts, inputValue, handleAction, getAvatar
 
   useEffect(() => {
     setFilteredContacts(
-      contacts.filter((contact) =>
-        (contact.givenName || contact.familyName) &&
-        `${contact.givenName} ${contact.familyName}`
-          .toLowerCase()
-          .includes(inputValue.toLowerCase())
-      )
+      contacts.filter(
+        (contact) =>
+          (contact.givenName || contact.familyName) &&
+          `${contact.givenName} ${contact.familyName}`.toLowerCase().includes(inputValue.toLowerCase()),
+      ),
     );
   }, [inputValue, contacts]);
 
@@ -41,11 +40,7 @@ export default function Contacts({ contacts, inputValue, handleAction, getAvatar
         <List.Item
           key={contact.id}
           title={getName(contact)}
-          icon={
-            contact.photo
-              ? `data:image/png;base64,${contact.photo}`
-              : getAvatarIcon(getName(contact))
-          }
+          icon={contact.photo ? `data:image/png;base64,${contact.photo}` : getAvatarIcon(getName(contact))}
           actions={
             <ActionPanel>
               <Action title="Select" onAction={() => handleAction(contact)} />

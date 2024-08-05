@@ -1,4 +1,4 @@
-import { useCachedPromise } from '@raycast/utils';
+import { useCachedPromise } from "@raycast/utils";
 import { fetchAllContacts } from "swift:../swift/contacts";
 import { Contact } from "./interfaces";
 
@@ -20,7 +20,7 @@ export function useContacts() {
           },
         },
       },
-    }
+    },
   );
 
   return { contacts, isLoading };

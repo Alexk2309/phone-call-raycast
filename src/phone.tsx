@@ -1,8 +1,8 @@
-import React, { useState} from "react";
-import { Action, ActionPanel, List, Icon  } from "@raycast/api";
-import { getAvatarIcon, runAppleScript } from '@raycast/utils';
+import React, { useState } from "react";
+import { Action, ActionPanel, List, Icon } from "@raycast/api";
+import { getAvatarIcon, runAppleScript } from "@raycast/utils";
 import Contacts from "./contacts";
-import { Contact } from "./interfaces"
+import { Contact } from "./interfaces";
 import { useContacts } from "./helper";
 
 export default function Command() {
@@ -21,11 +21,10 @@ export default function Command() {
     runAppleScript(script);
   }
 
-  const filteredContacts = contacts?.filter((contact) =>
-    (contact.givenName || contact.familyName) &&
-    `${contact.givenName} ${contact.familyName}`
-      .toLowerCase()
-      .includes(inputValue.toLowerCase())
+  const filteredContacts = contacts?.filter(
+    (contact) =>
+      (contact.givenName || contact.familyName) &&
+      `${contact.givenName} ${contact.familyName}`.toLowerCase().includes(inputValue.toLowerCase()),
   );
 
   return (

@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { List, getPreferenceValues } from "@raycast/api";
-import { getAvatarIcon, runAppleScript } from '@raycast/utils';
+import { getAvatarIcon, runAppleScript } from "@raycast/utils";
 import Contacts from "./contacts";
 import { Contact } from "./interfaces";
 import { useContacts } from "./helper";
-
 
 const preferences = getPreferenceValues<Preferences>();
 
@@ -20,8 +19,7 @@ export default function Command() {
   }
 
   function callNumber(number: string) {
-    const removeConfirmation =
-    `-- Get the localized name of the button "Call"
+    const removeConfirmation = `-- Get the localized name of the button "Call"
       tell application "FaceTime" to set Call_loc to localized string "Call"
       tell window 1
         click button Call_loc
@@ -33,7 +31,7 @@ export default function Command() {
         repeat until exists window 1
           delay 0.1
         end repeat
-        ${preferences.no_confirmation ? removeConfirmation : ''}
+        ${preferences.no_confirmation ? removeConfirmation : ""}
       end tell
     `;
     runAppleScript(appleScript);
