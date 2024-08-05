@@ -1,8 +1,8 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
-  "name": "phone-call",
+  "name": "phone",
   "title": "Phone Call",
-  "description": "Allows to call someone, through their contact details.",
+  "description": "An extension to initiate phone and facetime calls.",
   "icon": "phone.png",
   "author": "alexkim5682",
   "categories": [
@@ -13,14 +13,14 @@
     {
       "name": "phone",
       "title": "Call",
-      "description": "Allows a user to look call a contact.",
+      "description": "Intiates a phone call with a contact or a given phone number.",
       "mode": "view",
       "icon": "phone.png"
     },
     {
       "name": "facetime",
       "title": "Facetime Call",
-      "description": "Facetimes a contact",
+      "description": "Intiates a facetime call with a contact.",
       "mode": "view",
       "icon": "facetime.png"
     }
@@ -29,7 +29,7 @@
     {
       "name": "no_confirmation",
       "title": "Remove Confirmation Dialog",
-      "description": "Removes the confirmation dialog when facetiming",
+      "description": "Removes the confirmation dialog when facetiming.",
       "type": "checkbox",
       "label": "Enable",
       "default": false,

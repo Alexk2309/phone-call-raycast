@@ -18,9 +18,8 @@ export default function Command() {
   }
 
   function callNumber(number: string) {
-    runAppleScript(`
-      open location "tel://${number}"
-    `);
+    const script = `open location "tel://${number}"`;
+    runAppleScript(script);
   }
 
   const filteredContacts = contacts?.filter((contact) =>
